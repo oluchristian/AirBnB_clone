@@ -25,6 +25,7 @@ class BaseModel:
         self.id = str(uuid4())
         self.updated_at = datetime.now()
         self.created_at = datetime.now()
+        models.storage.new(self)
 
         if kwargs:
             for key, value in kwargs.items():
@@ -37,6 +38,7 @@ class BaseModel:
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
+            self.updated_at = datetime.now()
             models.storage.new(self)
 
         def __str__(self):
