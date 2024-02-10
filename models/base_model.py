@@ -36,7 +36,6 @@ class BaseModel:
                     setattr(self, key, value)
         else:
             self.id = str(uuid4())
-            self.updated_at = datetime.now()
             self.created_at = datetime.now()
             models.storage.new(self)
 
