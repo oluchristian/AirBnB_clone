@@ -19,9 +19,6 @@ class BaseModel:
         updated_at (datetime): Current date and time when an instance of
         Basemodel is created or updated
         """
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
         if kwargs:
             for key, value in kwargs.items():
                 # convert date time strings into datetime object
@@ -32,6 +29,7 @@ class BaseModel:
                     setattr(self, key, value)
         else:
             self.id = str(uuid4())
+            self.updated_at = datetime.now()
             self.created_at = datetime.now()
             models.storage.new(self)
 
