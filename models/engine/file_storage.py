@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+
+""" Documentation for the filestorage """
 import json
 from models.base_model import BaseModel
 from models.user import User
@@ -10,6 +12,7 @@ from models.state import State
 
 
 class FileStorage:
+    """ The FileStorage class """
     __file_path = "file.json"
     __objects = {}
 
