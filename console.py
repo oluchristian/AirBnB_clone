@@ -27,7 +27,7 @@ class HBNBCommand(cmd.Cmd):
     Args:
         cmd (Cmd): _description_
     """
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
     __registered_models = {
         'BaseModel': BaseModel,
         'User': User,
