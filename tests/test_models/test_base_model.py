@@ -1,10 +1,10 @@
 #!/usr/bin/python3
+
+""" The Base Model Test Module"""
+
 from models.base_model import BaseModel
 import unittest
 from datetime import datetime
-
-
-""" The Base Model Test Module"""
 
 
 class TestBaseModel(unittest.TestCase):
@@ -12,7 +12,11 @@ class TestBaseModel(unittest.TestCase):
 
     def setUp(self):
         """ The setup method"""
-        self.base_1 = BaseModel(name="Israel", age=25, sex="Male")
+        self.base_1 = BaseModel()
+        self.base_1.name = "Israel"
+        self.base_1.age = 25
+        self.base_1.sex = "Male"
+
         self.dictionary = self.base_1.to_dict()
         self.base_2 = self.base_1.to_dict()
 
