@@ -4,6 +4,7 @@
 
 
 import cmd
+import re
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -37,6 +38,79 @@ class HBNBCommand(cmd.Cmd):
         'Place': Place,
         'Review': Review
     }
+
+    def default(self, line):
+        """
+        Handles unknown syntax and special cases.
+
+        Args:
+            line (str): The command string entered by the user.
+
+        Returns:
+            None
+
+        This method is called when an unrecognized command is entered.
+        It checks if the input matches the expected pattern for model
+        method calls.
+        (e.g., "class_name.method_name(arguement)"). If a match is found,
+        it constructs the command using the '__handle_model' method and
+        passes it to the 'onecmd' method for execution. Otherwise, it prints
+        an error message about the unknown syntax.
+
+        Example:
+            (hbnb) User.show("38f22813-2753-4d42-b37c-57a17f1e4f88")
+            Command: show User "38f22813-2753-4d42-b37c-57a17f1e4f88"
+        """
+        match = re.match(pattern=r"(\w+)\.(\w+)\((.*)\)", string=line)
+        if match:
+            # Match found, construct the command using '__handle_model'
+            command = self.__handle_model(match.groups())
+            # Pass the command to 'onecmd' for execution
+            print(f"Command: {command}")
+            # split_command = command.split()
+            self.onecmd(command)
+        else:
+            # No match found, print an error message
+            print(f"*** Unknown syntax: {line.strip()}")
+            return
+
+    def help_default(self):
+        """Help function for do_default method
+        """
+        print("Handles unknown syntax and special cases.")
+
+    def __handle_model(self, groups):
+        """
+        Construct a command string based on the provided groups.
+
+        Args:
+            groups (tuple): A tuple containing the model name, method name,
+                            and arguments.
+
+        Returns:
+            str: The formatted command string.
+
+        This private method takes a tuple of groups
+        (model_name, method_name, arguments)
+        and constructs a command string in the format
+        "method_name model_name arguments".
+        It is used by the 'default' method to generate the command to be
+        executed.
+
+        Example:
+            __handle_model(('User', 'show', '"38f22813-2753-4d42"'))
+            Output: "show User \"38f22813-2753-4d42\""
+        """
+        # Unpack groups into model_name, method_name, and arguments
+        model_name, method_name, arguement = groups
+        # Construct the command string using the provided format
+        return f"{method_name} {model_name} {arguement}"
+
+    def help___handle_model(self):
+        """Help function for __handle_model private class method
+        """
+        print("Construct a command string based on the provided groups.")
+
     def do_EOF(self, line):
         """End of file command
 
@@ -356,6 +430,7 @@ class HBNBCommand(cmd.Cmd):
             update BaseModel 1234-1234-1234 email "aibnb@mail.com"
         """
         print(self.help_update.__doc__)
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
