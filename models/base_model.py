@@ -51,9 +51,9 @@ class BaseModel:
         updated_at (datetime): Current date and time when an instance of
         Basemodel is created or updated
         """
-        self.id = str(uuid4())
-        self.created_at = datetime.now()
-        self.updated_at = datetime.now()
+        # self.id = str(uuid4())
+        # self.created_at = datetime.now()
+        # self.updated_at = datetime.now()
 
         if kwargs:
             for key, value in kwargs.items():
