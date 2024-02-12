@@ -491,10 +491,10 @@ class HBNBCommand(cmd.Cmd):
             return
         # Count the number of instances of the specified class
         count = sum(
-        1 for key in storage.all() if key.startswith(f"{class_name}.")
+            1 for key in storage.all() if key.startswith(f"{class_name}.")
         )
         print(count)
-        
+
     def help_update(self):
         """Counts the number of class instances
         """
