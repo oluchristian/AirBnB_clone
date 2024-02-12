@@ -383,7 +383,7 @@ class HBNBCommand(cmd.Cmd):
             # attribute_dict = json.loads(dictionary_str.replace("'", "\""))
             # Retrieve the instance from storage
             key = "{}.{}".format(class_name, instance_id)
-            
+
             if key not in storage.all():
                 print("** no instance found **")
                 return
@@ -396,7 +396,7 @@ class HBNBCommand(cmd.Cmd):
 
             # Save the changes to storage
             storage.save()
-        else:    
+        else:
             # Split the command line into arguments
             args = line.split()
             # Check if there are arguments
@@ -464,7 +464,7 @@ class HBNBCommand(cmd.Cmd):
             update BaseModel 1234-1234-1234 email "aibnb@mail.com"
         """
         print(self.help_update.__doc__)
-        
+
     def do_count(self, line):
         """
         Retrieve the number of instances of a class.
@@ -490,7 +490,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return
         # Count the number of instances of the specified class
-        count = sum(1 for key in storage.all() if key.startswith(f"{class_name}."))
+        count = sum(
+        1 for key in storage.all() if key.startswith(f"{class_name}.")
+        )
         print(count)
         
     def help_update(self):
