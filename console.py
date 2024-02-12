@@ -68,7 +68,7 @@ class HBNBCommand(cmd.Cmd):
             # Match found, construct the command using '__handle_model'
             command = self.__handle_model(match.groups())
             # Pass the command to 'onecmd' for execution
-            print(f"Command: {command}")
+            # print(f"Command: {command}")
             # split_command = command.split()
             self.onecmd(command)
         else:
@@ -110,11 +110,11 @@ class HBNBCommand(cmd.Cmd):
         if method_name in ['show', 'destroy']:
             arguement = arguement.strip('"')
         if method_name == 'update':
-            identifier, attr_dict_str = re.match(r'"([^"]+)",\s(.*)', arguement).groups()
+            id, attr_dict = re.match(r'"([^"]+)",\s(.*)', arguement).groups()
         # Ensure double-quoted property names in the attribute dictionary
-            attribute_dict = json.loads(attr_dict_str.replace("'", "\""))
+            attribute_dict = json.loads(attr_dict.replace("'", "\""))
         # Construct the command string
-            arguement = f'{identifier} {json.dumps(attribute_dict)}'
+            arguement = f'{id} {json.dumps(attribute_dict)}'
 
     
         # Construct the command string using the provided format
