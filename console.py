@@ -116,7 +116,6 @@ class HBNBCommand(cmd.Cmd):
         # Construct the command string
             arguement = f'{id} {json.dumps(attribute_dict)}'
 
-    
         # Construct the command string using the provided format
         return f"{method_name} {model_name} {arguement}"
 
@@ -377,14 +376,9 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line (str): The full command line passed by the user
         """
-        # dictionary_check = re.match(pattern=r"({.*})", string=arguement)
-            # if dictionary_check:
-            #     attribute_dict = json.loads(arguement)
-            #     arguement = attribute_dict
-            # else:
-        dictionary_check = re.match(pattern=r"(\w+)\s(.*)\s({.*})", string=line)
-        if dictionary_check:
-            class_name, instance_id, dictionary_str = dictionary_check.groups()
+        dict_check = re.match(pattern=r"(\w+)\s(.*)\s({.*})", string=line)
+        if dict_check:
+            class_name, instance_id, dictionary_str = dict_check.groups()
             attribute_dict = json.loads(dictionary_str)
             # attribute_dict = json.loads(dictionary_str.replace("'", "\""))
             # Retrieve the instance from storage
