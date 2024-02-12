@@ -21,3 +21,26 @@ To start the command interpreter, run the following command in the terminal:
 
 This will launch the console, and you'll see a prompt (hbnb) indicating that you are inside the command interpreter.
 
+## How to Use the Command Interpreter
+Once inside the command interpreter, you can use various commands to interact with the system. Here are some examples of supported commands:
+
+```python
+# Create an Instance:
+create <class_name>
+
+# Show Instance Information:
+show <class_name> <instance_id>
+
+# Destroy an Instance:
+destroy <class_name> <instance_id>
+
+# Show All Instances or Instances of a Class:
+all [<class_name>]
+
+# Update an Instance:
+update <class_name> <instance_id> <attribute_name> '<attribute_value>'
+
+# Count Instances of a Class:
+<class_name>.count()
+```
+
