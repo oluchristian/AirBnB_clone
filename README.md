@@ -54,7 +54,7 @@ Please make sure to update tests as appropriate.
 ## Authors
 
 - [@oluchristian](https://www.github.com/oluchristian)
-
+- [@ezeisraeljohn](https://github.com/ezeisraeljohn)
 
 ## License
 
