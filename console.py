@@ -5,6 +5,8 @@
 
 import cmd
 import re
+import json
+import shlex
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -103,6 +105,18 @@ class HBNBCommand(cmd.Cmd):
         """
         # Unpack groups into model_name, method_name, and arguments
         model_name, method_name, arguement = groups
+        # Remove surrounding quotes from the arguments
+        # Check if the method requires quotes around the arguments
+        if method_name in ['show', 'destroy']:
+            arguement = arguement.strip('"')
+        if method_name == 'update':
+            identifier, attr_dict_str = re.match(r'"([^"]+)",\s(.*)', arguement).groups()
+        # Ensure double-quoted property names in the attribute dictionary
+            attribute_dict = json.loads(attr_dict_str.replace("'", "\""))
+        # Construct the command string
+            arguement = f'{identifier} {json.dumps(attribute_dict)}'
+
+    
         # Construct the command string using the provided format
         return f"{method_name} {model_name} {arguement}"
 
@@ -363,50 +377,76 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line (str): The full command line passed by the user
         """
-        # Split the command line into arguments
-        args = line.split()
-        # Check if there are arguments
-        if not args:
-            print("** class name missing **")
-            return
-        # Extract class name from arguments
-        class_name = args[0]
-        # Check if the class exists in registered models
-        registered_models = HBNBCommand.__registered_models
-        if class_name not in registered_models:
-            print("** class doesn't exist **")
-            return
-        # Check if instance id is missing
-        if len(args) < 2:
-            print("** instance id missing **")
-            return
-        # Extract instance id from arguments
-        instance_id = args[1]
-        # Create a string representing the combination
-        # of class name and instance id
-        class_and_id = "{}.{}".format(class_name, instance_id)
-        # Check if the instance exists in storage
-        if class_and_id not in storage.all():
-            print("** no instance found **")
-            return
-        # Check if attribute name is missing
-        if len(args) < 3:
-            print("** attribute name missing **")
-            return
-        # Extract attribute name from arguments
-        attribute_name = args[2]
-        # Check if value is missing
-        if len(args) < 4:
-            print("** value missing **")
-            return
-        # Extract attribute value from arguments
-        attribute_value = args[3]
-        # Retrieve the instance from storage
-        obj = storage.all()[class_and_id]
-        # Set the attribute value using setattr
-        setattr(obj, attribute_name, attribute_value)
-        # Save the changes to storage
-        storage.save()
+        # dictionary_check = re.match(pattern=r"({.*})", string=arguement)
+            # if dictionary_check:
+            #     attribute_dict = json.loads(arguement)
+            #     arguement = attribute_dict
+            # else:
+        dictionary_check = re.match(pattern=r"(\w+)\s(.*)\s({.*})", string=line)
+        if dictionary_check:
+            class_name, instance_id, dictionary_str = dictionary_check.groups()
+            attribute_dict = json.loads(dictionary_str)
+            # attribute_dict = json.loads(dictionary_str.replace("'", "\""))
+            # Retrieve the instance from storage
+            key = "{}.{}".format(class_name, instance_id)
+            
+            if key not in storage.all():
+                print("** no instance found **")
+                return
+
+            obj = storage.all()[key]
+
+            # Update instance attributes based on the dictionary
+            for attribute, value in attribute_dict.items():
+                setattr(obj, attribute, value)
+
+            # Save the changes to storage
+            storage.save()
+        else:    
+            # Split the command line into arguments
+            args = line.split()
+            # Check if there are arguments
+            if not args:
+                print("** class name missing **")
+                return
+            # Extract class name from arguments
+            class_name = args[0]
+            # Check if the class exists in registered models
+            registered_models = HBNBCommand.__registered_models
+            if class_name not in registered_models:
+                print("** class doesn't exist **")
+                return
+            # Check if instance id is missing
+            if len(args) < 2:
+                print("** instance id missing **")
+                return
+            # Extract instance id from arguments
+            instance_id = args[1]
+            # Create a string representing the combination
+            # of class name and instance id
+            class_and_id = "{}.{}".format(class_name, instance_id)
+            # Check if the instance exists in storage
+            if class_and_id not in storage.all():
+                print("** no instance found **")
+                return
+            # Check if attribute name is missing
+            if len(args) < 3:
+                print("** attribute name missing **")
+                return
+            # Extract attribute name from arguments
+            attribute_name = args[2]
+            # Check if value is missing
+            if len(args) < 4:
+                print("** value missing **")
+                return
+            # Extract attribute value from arguments
+            attribute_value = args[3]
+            # Retrieve the instance from storage
+            obj = storage.all()[class_and_id]
+            # Set the attribute value using setattr
+            setattr(obj, attribute_name, attribute_value)
+            # Save the changes to storage
+            storage.save()
 
     def help_update(self):
         """Display help messages for the 'update' command
@@ -430,6 +470,39 @@ class HBNBCommand(cmd.Cmd):
             update BaseModel 1234-1234-1234 email "aibnb@mail.com"
         """
         print(self.help_update.__doc__)
+        
+    def do_count(self, line):
+        """
+        Retrieve the number of instances of a class.
+
+        Args:
+            line (str): The full command line passed by the user.
+
+        Example:
+            (hbnb) User.count()
+        """
+        # Split the command line into arguments
+        args = line.split()
+        # Check if class name is missing
+        if not args:
+            print("** class name missing **")
+            return
+        # Extract class name from arguments
+        class_name = args[0]
+        # Get the registered models
+        registered_models = HBNBCommand.__registered_models
+        # Check if the class exists in registered models
+        if class_name not in registered_models:
+            print("** class doesn't exist **")
+            return
+        # Count the number of instances of the specified class
+        count = sum(1 for key in storage.all() if key.startswith(f"{class_name}."))
+        print(count)
+        
+    def help_update(self):
+        """Counts the number of class instances
+        """
+        print("This counts numbers of instances of a class")
 
 
 if __name__ == '__main__':
