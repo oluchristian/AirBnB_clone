@@ -51,6 +51,11 @@ to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
 
+## Authors
+
+- [@oluchristian](https://www.github.com/oluchristian)
+
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
