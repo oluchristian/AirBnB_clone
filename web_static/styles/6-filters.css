@@ -55,7 +55,7 @@ h4 {
 	margin-top: 0;
 	/* margin-bottom: 0; */
 }
-h2 {
+.popover h2 {
 	font-size: 16;
 }
 .popover {
@@ -67,7 +67,6 @@ h2 {
 	background-color: #FAFAFA;
 	border: 1px solid #DDDDDD;
 	border-radius: 4px;
-	/* background-color: red; */
 
 }
 .sublist {
